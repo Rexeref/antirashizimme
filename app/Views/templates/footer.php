@@ -3,4 +3,3 @@
     <p>Progetto scolastico di Cesqui e Palermo</p>
   </div>
 </footer>
-<script src="assets/dist/js/bootstrap.bundle.min.js"></script>

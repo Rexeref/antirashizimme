@@ -56,4 +56,13 @@ class Article extends BaseController {
                 . view("templates/footer");
     }
 
+    public function comment($crumb)
+    {
+        $model = model(ArticleModel::class);
+
+        $model->insertCommentInArticle($crumb, $_POST["content"]);
+
+        return redirect()->to('http://antirashizimme.infinityfreeapp.com/article/' . $crumb); 
+    }
+
 }

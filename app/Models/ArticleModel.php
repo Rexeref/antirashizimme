@@ -8,6 +8,9 @@ class ArticleModel extends Model
 {
     protected $table = 'article';
 
+    protected $allowedFields = ['article_crumb', 'user_id', 'content', 'created_at'];
+
+
     public function getLastArticles()
     {
         $query = $this->db->table('article')
@@ -45,8 +48,32 @@ class ArticleModel extends Model
 
     public function getAllCommentsFromArticle($crumb)
     {
-        $query = $this->db->table('article')->join('comment', 'comment.article_crumb = article.crumb')->join('user', 'user.id = comment.user_id')->orderBy('comment.created_at', 'DESC')->get();
+        $query = $this->db->table('article')->join('comment', 'comment.article_crumb = article.crumb')->join('user', 'user.id = comment.user_id')->orderBy('comment.created_at', 'DESC')->where('article.crumb', $crumb)->get();
         return $query->getResult();
+    }
+
+    public function insertCommentInArticle($articleCrumb, $content)
+    {
+        $session = session();
+
+        $userId = $session->get('userId');
+        if (!empty($userId) && $content !== "") {
+            $data = [
+                'article_crumb' => $articleCrumb,
+                'user_id'       => $userId,
+                'nickname'      => $session->get('userName'),
+                'content'       => $content,
+                'created_at'    => date("Y-m-d H:i:s"),
+            ];
+    
+            $this->setTable("comment");
+
+            if ($this->insert($data)) {
+                return $this->getInsertID();
+            } else {
+                return false;
+            }
+        }
     }
 
 }

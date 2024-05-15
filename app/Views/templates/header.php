@@ -15,13 +15,15 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
     <?php else: ?>
+        <script defer src="/assets/js/ajaxscript.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <?php endif ?>
 
-    <script src="assets/js/color-modes.js"></script>
-    <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/assets/js/color-modes.js"></script>
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
     <style>
@@ -216,7 +218,7 @@
                 </a>
             </div>
 
-            <form class="d-flex" role="search" action="search">
+            <form class="d-flex" role="search" action="/search">
                 <input class="form-control me-2" type="search" name="search" id="search" placeholder="Search"
                     aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button> <!-- TODO: Ricerca -->
@@ -227,14 +229,22 @@
                 $session = session();
                 if (empty($session->active)):
                     ?>
-                    <button type="button" class="btn btn-outline-primary me-2"
-                        onclick="location.href='/login'">Login</button>
-                    <button type="button" class="btn btn-primary" onclick="location.href='/register'">Sign-up</button>
+                    <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/login'">Login <i
+                            class="bi bi-door-open"></i></button>
+                    <button type="button" class="btn btn-primary" onclick="location.href='/register'">Sign-up <i
+                            class="bi bi-key"></i></button>
                 <?php else: ?>
-                    <a class="nav-link" href="#"><i class="bi bi-person-circle"></i> Ciao,
-                        <?= esc($session->userName) ?>!
-                    </a>
-                    <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-left"></i></a>
+                    <button type="button" class="btn btn-primary me-2" onclick="location.href='#'">
+                        <i class="bi bi-person-circle"></i> Ciao, <?= esc($session->userName) ?>!
+                    </button>
+                    <?php if($session->get('livello') >= 10): ?>
+                        <button type="button" class="btn btn-outline-secondary me-2" onclick="location.href='/manager'">
+                            <i class="bi bi-ui-checks-grid"></i>
+                        </button>
+                    <?php endif; ?>
+                    <button type="button" class="btn btn-outline-danger" onclick="location.href='/logout'">
+                        <i class="bi bi-box-arrow-left"></i>
+                    </button>
                 <?php endif ?>
             </div>
 
